@@ -11,21 +11,24 @@ public class InputManager : MonoBehaviour
 
     _controls = new Controls();
 
+    //if a movement is inputed set the movement direction in direction inputed
     _controls.Game.Movement.performed += ctx =>
     {
       myPlayer.SetMovementDirection(ctx.ReadValue<Vector3>());
     };
-    _controls.Game.Jump.performed += ctx =>
-    {
-      myPlayer.SetMovementDirection(ctx.ReadValue<Vector2>());
-    };
 
-    _controls.Game.Attack.performed += ctx =>
+    //if player jumps call the playerJump function in the Player class
+    _controls.Game.Jump.performed += _ =>
+    {
+      myPlayer.playerJump();
+    };
+  
+    _controls.Game.Attack.performed += _ =>
     {
       Debug.Log("Attack");
     };
 
-    _controls.Game.Crouch.performed += ctx =>
+    _controls.Game.Crouch.performed += _ =>
     {
       Debug.Log("Crouch");
     };
@@ -36,12 +39,14 @@ public class InputManager : MonoBehaviour
 
    public static void GameMode()
    {
+    //controls player inputs avaiable based on gamestate
      _controls.Game.Enable();
      _controls.UI.Disable();
    }
     
    public static void UIMode()
    {
+    //controls player inputs avaiable based on gamestate
      _controls.UI.Enable();
      _controls.Game.Disable();
    }
